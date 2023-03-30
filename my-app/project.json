@@ -1,7 +1,7 @@
 {
-  "name": "test-app",
-  "$schema": "node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "src",
+  "name": "my-app",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "my-app/src",
   "projectType": "application",
   "targets": {
     "build": {
@@ -10,12 +10,12 @@
       "defaultConfiguration": "production",
       "options": {
         "platform": "node",
-        "outputPath": "dist/test-app",
+        "outputPath": "dist/my-app",
         "format": ["cjs"],
         "bundle": false,
-        "main": "src/main.ts",
-        "tsConfig": "tsconfig.app.json",
-        "assets": ["src/assets"],
+        "main": "my-app/src/main.ts",
+        "tsConfig": "my-app/tsconfig.app.json",
+        "assets": ["my-app/src/assets"],
         "esbuildOptions": {
           "sourcemap": true,
           "outExtension": {
@@ -26,6 +26,8 @@
       "configurations": {
         "development": {},
         "production": {
+          "thirdParty": false,
+          "dependenciesFieldType": "dependencies",
           "generateLockfile": true,
           "esbuildOptions": {
             "sourcemap": false,
@@ -40,14 +42,14 @@
       "executor": "@nrwl/js:node",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "test-app:build"
+        "buildTarget": "my-app:build"
       },
       "configurations": {
         "development": {
-          "buildTarget": "test-app:build:development"
+          "buildTarget": "my-app:build:development"
         },
         "production": {
-          "buildTarget": "test-app:build:production"
+          "buildTarget": "my-app:build:production"
         }
       }
     },
@@ -55,14 +57,14 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["./**/*.ts"]
+        "lintFilePatterns": ["my-app/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectName}"],
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "jest.config.app.ts",
+        "jestConfig": "my-app/jest.config.ts",
         "passWithNoTests": true
       },
       "configurations": {
@@ -71,10 +73,6 @@
           "codeCoverage": true
         }
       }
-    },
-    "docker-build": {
-      "dependsOn": ["build"],
-      "command": "docker build -f Dockerfile . -t test-app"
     }
   },
   "tags": []
